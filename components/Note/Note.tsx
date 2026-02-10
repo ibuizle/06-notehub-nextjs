@@ -34,7 +34,6 @@ const Note: React.FC<NoteProps> = ({ note }) => {
         <span className={s.tag}>{note.tag}</span>
         
         <div className={s.actions}>
-           {/* 👇 Посилання згідно з ТЗ */}
            <Link href={`/notes/${note.id}`} className={s.link}>
              View details
            </Link>
