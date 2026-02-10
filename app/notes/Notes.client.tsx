@@ -9,7 +9,7 @@ import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
 import Modal from '@/components/Modal/Modal';
 import NoteForm from '@/components/NoteForm/NoteForm';
-import css from './NotesPage.module.css'; // Переконайся, що файл так називається
+import css from './NotesPage.module.css';
 
 const PER_PAGE = 12;
 
