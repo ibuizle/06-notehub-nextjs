@@ -1,81 +1,86 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useDebouncedCallback } from 'use-debounce';
 import { fetchNotes } from '@/lib/api';
+
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
 import Modal from '@/components/Modal/Modal';
 import NoteForm from '@/components/NoteForm/NoteForm';
-// Оновлено імпорт стилів, щоб шлях завжди був вірним незалежно від вкладеності
+
 import css from '@/app/notes/NotesPage.module.css';
 
-const PER_PAGE = 12;
-
-interface NotesClientProps {
-  initialTag?: string;
+interface Props {
+  initialTag: string;
 }
 
-export default function NotesClient({ initialTag = 'all' }: NotesClientProps) {
-  const [page, setPage] = useState(1);
+export default function NotesClient({ initialTag }: Props) {
+  const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState('');
-  
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Скидаємо сторінку на першу при зміні тегу
-  useEffect(() => {
-    setPage(1);
-  }, [initialTag]);
+  const tag = useMemo(() => initialTag ?? 'all', [initialTag]);
 
-  const handleSearch = useDebouncedCallback((value: string) => {
+  const debouncedSearch = useDebouncedCallback((value: string) => {
+    setCurrentPage(1);
     setSearch(value);
-    setPage(1);
   }, 500);
 
   const { data, isLoading, isError } = useQuery({
-    // Додаємо initialTag у ключ для ізоляції кешу за фільтрами
-    queryKey: ['notes', page, search, initialTag],
-    // Передаємо tag у функцію API
-    queryFn: () => fetchNotes({ page, perPage: PER_PAGE, search, tag: initialTag }),
-    placeholderData: (prev) => prev,
+    queryKey: ['notes', currentPage, search, tag],
+    queryFn: () =>
+      fetchNotes({
+        page: currentPage,
+        perPage: 12,
+        search,
+        tag,
+      }),
   });
 
-  const handlePageChange = ({ selected }: { selected: number }) => {
-    setPage(selected + 1);
-  };
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [tag]);
 
   return (
     <div className={css.app}>
-      <header className={css.toolbar}>
-        <SearchBox onSearch={handleSearch} />
-        <button className={css.button} onClick={() => setIsCreateModalOpen(true)}>
-          Create note +
+      <div className={css.toolbar}>
+        <SearchBox onSearch={debouncedSearch} />
+
+        <button
+          type="button"
+          className={css.button}
+          onClick={() => setIsModalOpen(true)}
+        >
+          Add note
         </button>
-      </header>
+      </div>
 
       {isLoading && <p>Loading...</p>}
-      
-      {data && data.notes.length > 0 ? (
-        <NoteList notes={data.notes} />
-      ) : (
-        !isLoading && !isError && <p>No notes found</p>
+      {isError && <p>Error loading notes</p>}
+
+      {!isLoading && !isError && data && (
+        <>
+          <NoteList notes={data.notes} />
+
+          <Pagination
+            pageCount={data.totalPages}
+            currentPage={currentPage}
+            onPageChange={({ selected }) =>
+              setCurrentPage(selected + 1)
+            }
+          />
+        </>
       )}
 
-      {data && data.totalPages > 1 && (
-        <Pagination
-          pageCount={data.totalPages}
-          currentPage={page}
-          onPageChange={handlePageChange}
-        />
-      )}
-
-      {isCreateModalOpen && (
-        <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)}>
-          <NoteForm onClose={() => setIsCreateModalOpen(false)} />
-        </Modal>
-      )}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      >
+        <NoteForm onClose={() => setIsModalOpen(false)} />
+      </Modal>
     </div>
   );
 }
