@@ -4,10 +4,9 @@ import s from './LayoutNotes.module.css'; //
 interface LayoutProps {
   children: React.ReactNode;
   sidebar: React.ReactNode;
-  modal: React.ReactNode;
 }
 
-export default function FilterLayout({ children, sidebar, modal }: LayoutProps) {
+export default function FilterLayout({ children, sidebar }: LayoutProps) {
   return (
     <div className={s.container}>
       <aside className={s.sidebar}>
@@ -15,7 +14,6 @@ export default function FilterLayout({ children, sidebar, modal }: LayoutProps) 
       </aside>
       <div className={s.notesWrapper}>
         {children}
-        {modal}
       </div>
     </div>
   );
