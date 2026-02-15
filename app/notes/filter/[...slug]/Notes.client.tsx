@@ -9,7 +9,8 @@ import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
 import Modal from '@/components/Modal/Modal';
 import NoteForm from '@/components/NoteForm/NoteForm';
-import css from './NotesPage.module.css';
+// Оновлено імпорт стилів, щоб шлях завжди був вірним незалежно від вкладеності
+import css from '@/app/notes/NotesPage.module.css';
 
 const PER_PAGE = 12;
 
@@ -23,7 +24,7 @@ export default function NotesClient({ initialTag = 'all' }: NotesClientProps) {
   
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  // Скидаємо сторінку на першу, якщо змінюється тег (категорія)
+  // Скидаємо сторінку на першу при зміні тегу
   useEffect(() => {
     setPage(1);
   }, [initialTag]);
@@ -34,9 +35,9 @@ export default function NotesClient({ initialTag = 'all' }: NotesClientProps) {
   }, 500);
 
   const { data, isLoading, isError } = useQuery({
-    // 👇 Додаємо initialTag у ключ, щоб кеш був різним для різних фільтрів
+    // Додаємо initialTag у ключ для ізоляції кешу за фільтрами
     queryKey: ['notes', page, search, initialTag],
-    // 👇 Передаємо initialTag у функцію API
+    // Передаємо tag у функцію API
     queryFn: () => fetchNotes({ page, perPage: PER_PAGE, search, tag: initialTag }),
     placeholderData: (prev) => prev,
   });
