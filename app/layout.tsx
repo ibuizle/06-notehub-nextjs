@@ -14,15 +14,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal, // Додаємо цей проп для паралельного маршруту модалки
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode; // Типізуємо слот модалки
 }>) {
   return (
     <html lang="en">
       <body className={inter.className}>
         <TanStackProvider>
           <Header />
+          {/* Основний контент сторінки */}
           {children}
+          
+          {/* Слот для модального вікна (Intercepted Route) */}
+          {modal}
+          
           <Footer />
         </TanStackProvider>
       </body>
