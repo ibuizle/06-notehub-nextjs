@@ -3,12 +3,11 @@ import { fetchNotes } from '@/lib/api';
 import NotesClient from './Notes.client';
 
 interface Props {
-  params: Promise<{ slug?: string[] }>;
+  params: { slug?: string[] };
 }
 
 export default async function FilteredNotesPage({ params }: Props) {
-  const { slug } = await params;
-  const tag = slug?.[0] ?? 'all';
+  const tag = params.slug?.[0] ?? 'all';
 
   const queryClient = new QueryClient();
 
