@@ -15,6 +15,7 @@ export default function NotePreview({ id }: NotePreviewProps) {
   const router = useRouter();
 
   const { data: note, isLoading } = useQuery({
+    refetchOnMount: false,
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
   });
