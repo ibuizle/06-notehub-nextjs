@@ -31,7 +31,30 @@ export default function NotePreview({ id }: NotePreviewProps) {
 
       {!isLoading && !isError && data && (
         <div onClick={(e) => e.stopPropagation()}>
+          {/* Видима кнопка закриття */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              marginBottom: 12,
+            }}
+          >
+            <button type="button" onClick={handleClose}>
+              Close
+            </button>
+          </div>
+
           <h2>{data.title}</h2>
+
+          <p>
+            <b>Tag:</b> {data.tag}
+          </p>
+
+          <p>
+            <b>Created:</b>{' '}
+            {data.createdAt ? new Date(data.createdAt).toLocaleString() : '—'}
+          </p>
+
           <p>{data.content}</p>
         </div>
       )}
