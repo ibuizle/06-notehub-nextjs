@@ -4,18 +4,13 @@ import { fetchNoteById } from '@/lib/api';
 import NoteDetailsClient from './NoteDetails.client';
 
 interface Props {
-  // 👇 Обов'язкова вимога Next.js 15: params має бути Promise
-  params: Promise<{
-    id: string;
-  }>;
+  params: Promise<{ id: string }>;
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { id: string };
-}): Promise<Metadata> {
-  const id = params.id;
+export async function generateMetadata(
+  { params }: Props
+): Promise<Metadata> {
+  const { id } = await params; // 🔥 ОБОВ'ЯЗКОВО await
 
   try {
     const note = await fetchNoteById(id);
@@ -41,23 +36,9 @@ export async function generateMetadata({
       },
     };
   } catch {
-    const title = 'Note not found | NoteHub';
-    const description = 'This note does not exist in NoteHub.';
-    const url = `https://notehub.app/notes/${encodeURIComponent(id)}`;
-
     return {
-      title,
-      description,
-      openGraph: {
-        title,
-        description,
-        url,
-        images: [
-          {
-            url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
-          },
-        ],
-      },
+      title: 'Note not found | NoteHub',
+      description: 'This note does not exist in NoteHub.',
     };
   }
 }
@@ -65,9 +46,7 @@ export async function generateMetadata({
 export default async function NoteDetailsPage(props: Props) {
   const queryClient = new QueryClient();
 
-  // 👇 Отримуємо параметри через await відповідно до фідбеку
-  const params = await props.params;
-  const { id } = params;
+  const { id } = await props.params; // 🔥 теж await
 
   await queryClient.prefetchQuery({
     queryKey: ['note', id],

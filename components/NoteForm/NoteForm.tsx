@@ -24,20 +24,15 @@ export default function NoteForm() {
     const content = String(formData.get('content') ?? '').trim();
     const tag = String(formData.get('tag') ?? 'Todo') as NoteTag;
 
-    const note: CreateNoteParams = {
-      title,
-      content,
-      tag,
-    };
+    const note: CreateNoteParams = { title, content, tag };
 
     try {
       await mutation.mutateAsync(note);
-
       clearDraft();
       await queryClient.invalidateQueries({ queryKey: ['notes'] });
       router.back();
     } catch {
-      // помилку показуємо через mutation.isError
+      // error state показуємо через mutation.isError
     }
   };
 
@@ -84,12 +79,7 @@ export default function NoteForm() {
       <div className={css.formGroup}>
         <label>
           Tag
-          <select
-            className={css.select}
-            name="tag"
-            value={draft.tag}
-            onChange={onTagChange}
-          >
+          <select className={css.select} name="tag" value={draft.tag} onChange={onTagChange}>
             <option value="Todo">Todo</option>
             <option value="Work">Work</option>
             <option value="Personal">Personal</option>

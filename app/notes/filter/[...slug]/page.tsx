@@ -7,12 +7,12 @@ interface Props {
   params: Promise<{ slug: string[] }>;
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string[] };
-}): Promise<Metadata> {
-  const rawTag = params.slug?.[0] ?? 'all';
+export async function generateMetadata(
+  { params }: Props
+): Promise<Metadata> {
+  const { slug } = await params; // 🔥 ОБОВ'ЯЗКОВО await
+
+  const rawTag = slug?.[0] ?? 'all';
   const tag = decodeURIComponent(rawTag);
 
   const isAll = tag === 'all';
@@ -21,7 +21,7 @@ export async function generateMetadata({
     ? 'Browse all notes in NoteHub.'
     : `Browse notes filtered by "${tag}" in NoteHub.`;
 
-  const url = `https://notehub.app/notes/filter/${params.slug?.map(encodeURIComponent).join('/')}`;
+  const url = `https://notehub.app/notes/filter/${slug?.map(encodeURIComponent).join('/')}`;
 
   return {
     title,
@@ -40,8 +40,7 @@ export async function generateMetadata({
 }
 
 export default async function FilteredNotesPage({ params }: Props) {
-  const { slug } = await params;
-
+  const { slug } = await params; // 🔥 теж await
   const tag = slug?.[0] ?? 'all';
 
   const queryClient = new QueryClient();
