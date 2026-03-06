@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Zustand State Management App 🐻
 
-## Getting Started
+A modern web application built to demonstrate efficient global state management using **Zustand** within the **Next.js** ecosystem. This project showcases how to handle complex application states effortlessly while maintaining high performance and a clean codebase.
 
-First, run the development server:
+🔗 **[Live Demo](https://06-notehub-nextjs-ten-azure.vercel.app/)**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📖 About the Project
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Managing state in React/Next.js applications can sometimes become complex. This project was developed to practice and implement **Zustand** — a small, fast, and scalable state-management solution. It avoids unnecessary re-renders and provides a simpler alternative to Context API or Redux.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Key Features:
+- **Global State Management:** Seamlessly sharing data across different components without "prop drilling".
+- **Optimized Performance:** Zustand ensures components only re-render when their specific state changes.
+- **Modern Architecture:** Built on top of the powerful Next.js App Router.
+- **Type Safety:** Fully typed with TypeScript to catch errors early and improve the developer experience.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠 Built With
 
-## Learn More
+- **[Next.js](https://nextjs.org/):** React framework for building fast and SEO-friendly web applications.
+- **[Zustand](https://docs.pmnd.rs/zustand/):** A minimalistic and powerful state management library for React.
+- **[TypeScript](https://www.typescriptlang.org/):** JavaScript with syntax for types.
+- **CSS / Styling:** Custom styling for a clean and responsive user interface.
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 How to Run Locally
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To explore the code and run this project on your machine:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/ibuizle/08-zustand.git](https://github.com/ibuizle/08-zustand.git)
